@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebCraft — Création de Sites Web Modernes</title>
+  <style>
+    :root {
+      --bg: #f8f9fb;
+      --text: #1a1a1a;
+      --primary: #6366f1;
+      --secondary: #06b6d4;
+      --muted: #6b7280;
+      --card-bg: #ffffff;
+      --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      animation: slideDown 0.6s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      margin-left: 20px;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 100px 60px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border-radius: 0 0 40px 40px;
+      overflow: hidden;
+    }
+
+    .hero-text {
+      max-width: 600px;
+      animation: fadeInUp 1s ease both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero img {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .btn {
+      background: #fff;
+      color: var(--primary);
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.9);
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .btn-blue {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-blue:hover {
+      background: #4f46e5;
+      color: #fff;
+    }
+
+    section {
+      padding: 80px 60px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 40px;
+      color: var(--primary);
+      position: relative;
+    }
+
+    h2::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--secondary);
+      margin: 10px auto 0;
+      border-radius: 4px;
+      animation: growLine 1s ease;
+    }
+
+    @keyframes growLine {
+      from { width: 0; opacity: 0; }
+      to { width: 60px; opacity: 1; }
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin-bottom: 15px;
+    }
+
+    footer {
+      background: #fff;
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
+      border-radius: 20px 20px 0 0;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 80px 20px;
+      }
+      header {
+        padding: 20px;
+      }
+      section {
+        padding: 60px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">WebCraft
+	  <img src="Logo.png" alt="Logo WebCraft" style="height:40px;vertical-align:middle;">
+	</div>
+    <nav>
+      <a href="#apropos">À propos</a>
+      <a href="#services">Services</a>
+      <a href="#portfolio">Projets réalisés</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Créez votre présence web avec WebCraft</h1>
+      <p>WebCraft conçoit des sites modernes, performants et élégants adaptés à vos besoins. Du site vitrine au projet complet, nous donnons vie à vos idées.</p>
+      <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Commencer</button>
+    </div>
+	<img src="Logo.png" width="280" alt="Logo WebCraft" />
+  </section>
+
+  <section id="apropos">
+    <h2>À propos de WebCraft</h2>
+    <p>WebCraft, c’est l’alliance du design moderne et du code propre. Nous créons des expériences digitales uniques et efficaces, pour les particuliers, freelances et entreprises.<br>
+	   Tout ce que vous avez à faire est d'expliquer votre projet. Un de nos développeur vous réalisera votre projet le plus rapidement possible. <br>
+	   Votre site ne sera posté qu'après le paiement (si le site nécéssite un paiement.</p>
+  </section>
+
+  <section id="services">
+    <h2>Nos Services</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Site Vitrine</h3>
+        <p>Présentez vos services et votre image professionnelle à travers un site clair et esthétique.</p>
+      </div>
+      <div class="card">
+        <h3>Site de présentation</h3>
+        <p>Mettez en avant vos créations et vos projets avec un design immersif et fluide.</p>
+      </div>
+      <div class="card">
+        <h3>Boutique en ligne</h3>
+        <p>Créez votre boutique en ligne moderne et simple, prête à vendre vos produits.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2>Projets Réalisés</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>L9K</h3>
+        <p>Un site simple pour présenter les compétences et les réseaux de L9K</p>
+        <button class="btn btn-blue" onclick="window.open('https://postsite.github.io/L9K','_blank')">Visiter</button>
+      </div>
+      <div class="card">
+        <h3>PVG Zeco</h3>
+        <p>Un site de présentation de la chaîne YouTube PVG Zeco</p>
+        <button class="btn btn-blue" onclick="window.open('https://postsite.github.io/PVG-Zeco','_blank')">Visiter</button>
+      </div>
+      <div class="card">
+        <h3>League COD</h3>
+        <p>Un site moderne et animé mettant en avant la League COD, qui organise des tournois Call of Duty.</p>
+        <button class="btn btn-blue" onclick="window.open('https://postsite.github.io/League-COD/','_blank')">Visiter</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contactez-nous</h2>
+    <p>Besoin d’un site ou d’un devis ? Rejoignez notre Discord ou envoyez-nous un message.</p>
+    <button class="btn" onclick="window.open('https://discord.gg/cB2Nbdjfru','_blank')">Rejoindre le Discord</button>
+  </section>
+
+  <footer>
+    © <span id="year"></span> WebCraft — Tout droits réservés - Créations de sites web
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Animation d’apparition lors du scroll
+    const sections = document.querySelectorAll('section');
+    const options = { threshold: 0.2 };
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, options);
+
+    sections.forEach(sec => observer.observe(sec));
+  </script>
+</body>
+</html>
