@@ -1,328 +1,212 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebCraft</title>
-  <style>
-    :root {
-      --bg: #f8f9fb;
-      --text: #1a1a1a;
-      --primary: #6366f1;
-      --secondary: #06b6d4;
-      --muted: #6b7280;
-      --card-bg: #ffffff;
-      --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-      font-family: 'Poppins', sans-serif;
-    }
+<meta charset="UTF-8">
+<title>WebCraft — Maintenance</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 60px;
-      background: #fff;
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      animation: slideDown 0.6s ease;
-    }
+<style>
+:root {
+    --dark: #142C48;
+    --blue: #2B5D99;
+    --white: #ffffff;
+    --accent: #FFB547;
+}
 
-    @keyframes slideDown {
-      from { transform: translateY(-100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
-    .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--primary);
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, var(--dark), var(--blue));
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
 
-    .logo:hover {
-      transform: scale(1.1);
-    }
+#particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
 
-    nav a {
-      text-decoration: none;
-      margin-left: 20px;
-      color: var(--text);
-      font-weight: 500;
-      transition: color 0.2s ease, transform 0.2s ease;
-    }
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    animation: float linear infinite;
+}
 
-    nav a:hover {
-      color: var(--primary);
-      transform: translateY(-2px);
-    }
+h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 1s ease-out forwards;
+}
 
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 100px 60px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #fff;
-      border-radius: 0 0 40px 40px;
-      overflow: hidden;
-    }
+p {
+    font-size: 1.3rem;
+    margin-bottom: 50px;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 1.2s ease-out forwards;
+}
 
-    .hero-text {
-      max-width: 600px;
-      animation: fadeInUp 1s ease both;
-    }
+#countdown {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.time-box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 30px 20px;
+    border-radius: 20px;
+    min-width: 100px;
+    transition: transform 0.3s ease, background 0.5s ease;
+    animation: pop 0.8s ease forwards;
+}
 
-    .hero img {
-      animation: float 4s ease-in-out infinite;
-    }
+.time-box:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.25);
+}
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
+.time-box span {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    animation: count 1s ease;
+}
 
-    .hero-text h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
+.time-box small {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--white);
+}
 
-    .hero-text p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-    }
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
 
-    .btn {
-      background: #fff;
-      color: var(--primary);
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: var(--shadow);
-    }
+@keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
 
-    .btn:hover {
-      background: rgba(255,255,255,0.9);
-      transform: translateY(-4px) scale(1.05);
-    }
+@keyframes count {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
 
-    .btn-blue {
-      background: var(--primary);
-      color: #fff;
-    }
+@keyframes float {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+}
 
-    .btn-blue:hover {
-      background: #4f46e5;
-      color: #fff;
-    }
-
-    section {
-      padding: 80px 60px;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 40px;
-      color: var(--primary);
-      position: relative;
-    }
-
-    h2::after {
-      content: "";
-      display: block;
-      width: 60px;
-      height: 4px;
-      background: var(--secondary);
-      margin: 10px auto 0;
-      border-radius: 4px;
-      animation: growLine 1s ease;
-    }
-
-    @keyframes growLine {
-      from { width: 0; opacity: 0; }
-      to { width: 60px; opacity: 1; }
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-    }
-
-    .card h3 {
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      color: var(--muted);
-      margin-bottom: 15px;
-    }
-
-    footer {
-      background: #fff;
-      padding: 30px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
-      box-shadow: var(--shadow);
-      border-radius: 20px 20px 0 0;
-      animation: fadeIn 1s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @media (max-width: 800px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 80px 20px;
-      }
-      header {
-        padding: 20px;
-      }
-      section {
-        padding: 60px 20px;
-      }
-    }
-  </style>
+footer {
+    position: absolute;
+    bottom: 20px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    z-index: 1;
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">WebCraft
-	  <img src="Logo.png" alt="Logo WebCraft" style="height:40px;vertical-align:middle;">
-	</div>
-    <nav>
-      <a href="#apropos">À propos</a>
-      <a href="#services">Services</a>
-      <a href="#portfolio">Projets réalisés</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<div id="particle-container"></div>
 
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Obtenez votre site web avec WebCraft</h1>
-      <p>WebCraft conçoit des sites modernes, performants et élégants adaptés à vos besoins. Du site vitrine au projet complet, nous donnons vie à vos idées.</p>
-      <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Commencer</button>
+<h1>WebCraft est en maintenance</h1>
+<p>Nous travaillons sur notre site pour vous offrir une expérience encore meilleure. Patientez jusqu’à notre ouverture !</p>
+
+<div id="countdown">
+    <div class="time-box">
+        <span id="days">00</span>
+        <small>Jours</small>
     </div>
-	<img src="Logo.png" width="280" alt="Logo WebCraft" />
-  </section>
-
-  <section id="apropos">
-    <h2>À propos de WebCraft</h2>
-    <p>WebCraft, c’est l’alliance du design moderne et du code propre. Nous créons des expériences digitales uniques et efficaces, pour les particuliers, freelances et entreprises.<br>
-	   Tout ce que vous avez à faire est d'expliquer votre projet. Un de nos développeur vous réalisera votre projet le plus rapidement possible. <br>
-	   Votre site ne sera posté qu'après le paiement (si le site nécéssite un paiement.</p>
-  </section>
-
-  <section id="services">
-    <h2>Nos Services</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Site Vitrine</h3>
-        <p>Présentez vos services et votre image professionnelle à travers un site clair et esthétique.</p>
-      </div>
-      <div class="card">
-        <h3>Site de présentation</h3>
-        <p>Mettez en avant vos créations et vos projets avec un design immersif et fluide.</p>
-      </div>
-      <div class="card">
-        <h3>Boutique en ligne</h3>
-        <p>Créez votre boutique en ligne moderne et simple, prête à vendre vos produits.</p>
-      </div>
+    <div class="time-box">
+        <span id="hours">00</span>
+        <small>Heures</small>
     </div>
-  </section>
-
-  <section id="portfolio">
-    <h2>Projets Réalisés</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>L9K</h3>
-        <p>Un site simple pour présenter les compétences et les réseaux de L9K</p>
-        <button class="btn btn-blue" onclick="window.open('https://postsite.github.io/L9K','_blank')">Visiter</button>
-      </div>
-      <div class="card">
-        <h3>SCP Foundation Site</h3>
-        <p>Un site de présentation du jeu Roblox SCP Foundation Site.</p>
-        <button class="btn btn-blue" onclick="window.open('https://postsite.github.io/scp-foundation-site','_blank')">Visiter</button>
-      </div>
-      <div class="card">
-        <h3>G4 Four Golds</h3>
-        <p>Un site moderne et animé mettant en avant La G4 Four Golds, une team esport</p>
-        <button class="btn btn-blue" onclick="window.open('https://g4-four-golds.vercel.app','_blank')">Visiter</button>
-      </div>
+    <div class="time-box">
+        <span id="minutes">00</span>
+        <small>Minutes</small>
     </div>
-  </section>
+    <div class="time-box">
+        <span id="seconds">00</span>
+        <small>Secondes</small>
+    </div>
+</div>
 
-  <section id="contact">
-    <h2>Contactez-nous</h2>
-    <p>Besoin d’un site ou d’un devis ? Rejoignez notre Discord ou envoyez-nous un message.</p>
-    <button class="btn" onclick="window.open('https://discord.gg/cB2Nbdjfru','_blank')">Rejoindre le Discord</button>
-  </section>
+<footer>© 2026 WebCraft — Bientôt en ligne</footer>
 
-  <footer>
-    © <span id="year"></span> WebCraft — Tout droits réservés - Créations de sites web
-  </footer>
+<script>
+const launchDate = new Date("2026-01-05T18:14:00");
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+function updateCountdown() {
+    const now = new Date();
+    let diff = launchDate - now;
+    if (diff <= 0) {
+        window.location.href = "1.html";
+        return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    // Animation d’apparition lors du scroll
-    const sections = document.querySelectorAll('section');
-    const options = { threshold: 0.2 };
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, options);
+    document.getElementById("days").textContent = days.toString().padStart(2,'0');
+    document.getElementById("hours").textContent = hours.toString().padStart(2,'0');
+    document.getElementById("minutes").textContent = minutes.toString().padStart(2,'0');
+    document.getElementById("seconds").textContent = seconds.toString().padStart(2,'0');
+}
 
-    sections.forEach(sec => observer.observe(sec));
-  </script>
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+const container = document.getElementById("particle-container");
+for(let i=0;i<50;i++){
+    const p = document.createElement("div");
+    p.classList.add("particle");
+    const size = Math.random()*15+5;
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    p.style.left = Math.random()*100 + "vw";
+    p.style.animationDuration = (5 + Math.random()*10) + "s";
+    p.style.animationDelay = Math.random()*5 + "s";
+    container.appendChild(p);
+}
+</script>
+
 </body>
 </html>
