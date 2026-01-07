@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Réponses — WebCraft</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --dark:#142C48;
+    --blue:#2B5D99;
+    --white:#ffffff;
+    --light:#f5f8fc;
+    --gray:#e0e6f0;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:linear-gradient(180deg,#ffffff,#f5f8fc);
+    color:var(--dark);
+    overflow-x:hidden;
+}
+
+/* HEADER */
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:15px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,0.9);
+    backdrop-filter:blur(12px);
+    z-index:1000;
+    transition: all 0.3s ease;
+}
+
+header.scrolled{
+    background:rgba(255,255,255,1);
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.logo-box img{
+    height:50px;
+}
+
+/* HERO */
+.hero{
+    min-height:50vh;
+    background:linear-gradient(135deg,var(--dark),var(--blue));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 10% 60px;
+    color:var(--white);
+}
+
+.hero h1{
+    font-size:3.2rem;
+    font-weight:700;
+    margin-bottom:20px;
+    animation:fadeInUp 0.8s ease forwards;
+}
+
+.hero p{
+    font-size:1.1rem;
+    animation:fadeInUp 1s ease forwards;
+}
+
+/* RESPONSES SECTION */
+.responses-section{
+    padding:80px 8%;
+    max-width:1200px;
+    margin:auto;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:25px;
+    margin-bottom:60px;
+}
+
+.stat-card{
+    background:var(--white);
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    text-align:center;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-card .number{
+    font-size:2.5rem;
+    font-weight:700;
+    color:var(--blue);
+    display:block;
+    margin-bottom:10px;
+}
+
+.stat-card .label{
+    font-size:1rem;
+    color:var(--dark);
+}
+
+.responses-container{
+    display:grid;
+    gap:30px;
+}
+
+.response-card{
+    background:var(--white);
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity:0;
+    animation:fadeInUp 0.6s ease forwards;
+}
+
+.response-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 40px rgba(0,0,0,0.12);
+}
+
+.response-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    padding-bottom:20px;
+    border-bottom:2px solid var(--gray);
+}
+
+.response-header h3{
+    color:var(--blue);
+    font-size:1.4rem;
+}
+
+.response-date{
+    color:#7f8c8d;
+    font-size:0.9rem;
+}
+
+.response-content{
+    display:grid;
+    gap:20px;
+}
+
+.response-item{
+    display:grid;
+    gap:8px;
+}
+
+.response-label{
+    font-weight:600;
+    color:var(--dark);
+    font-size:0.95rem;
+}
+
+.response-value{
+    color:#555;
+    padding:12px 18px;
+    background:var(--light);
+    border-radius:12px;
+    font-size:0.95rem;
+}
+
+.response-value.multiple{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.response-value.multiple span{
+    background:var(--blue);
+    color:white;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:0.85rem;
+}
+
+.delete-btn{
+    padding:10px 20px;
+    background:#e74c3c;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:500;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover{
+    background:#c0392b;
+    transform:scale(1.05);
+}
+
+.view-controls{
+    display:flex;
+    gap:15px;
+    margin-bottom:40px;
+    justify-content:center;
+}
+
+.view-btn{
+    padding:12px 30px;
+    border:2px solid var(--blue);
+    background:white;
+    color:var(--blue);
+    border-radius:25px;
+    cursor:pointer;
+    font-weight:600;
+    transition: all 0.3s ease;
+}
+
+.view-btn.active{
+    background:linear-gradient(135deg,var(--dark),var(--blue));
+    color:white;
+}
+
+.view-btn:hover{
+    transform:scale(1.05);
+}
+
+.response-actions{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    padding-top:15px;
+    border-top:2px solid var(--gray);
+}
+
+.action-btn{
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:500;
+    transition: all 0.3s ease;
+    font-size:0.9rem;
+}
+
+.view-detail-btn{
+    background:var(--blue);
+    color:white;
+}
+
+.view-detail-btn:hover{
+    background:var(--dark);
+    transform:scale(1.05);
+}
+
+.table-view{
+    background:white;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    overflow:hidden;
+}
+
+.table-view table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table-view thead{
+    background:linear-gradient(135deg,var(--dark),var(--blue));
+    color:white;
+}
+
+.table-view th{
+    padding:20px 15px;
+    text-align:left;
+    font-weight:600;
+    font-size:0.95rem;
+}
+
+.table-view td{
+    padding:18px 15px;
+    border-bottom:1px solid var(--gray);
+    font-size:0.9rem;
+}
+
+.table-view tbody tr{
+    transition: background 0.2s ease;
+}
+
+.table-view tbody tr:hover{
+    background:var(--light);
+}
+
+.table-actions{
+    display:flex;
+    gap:8px;
+}
+
+.table-actions button{
+    padding:8px 15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:0.85rem;
+    font-weight:500;
+    transition: all 0.2s ease;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    z-index:10000;
+    align-items:center;
+    justify-content:center;
+    animation:fadeIn 0.3s ease;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-content{
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    max-width:800px;
+    max-height:90vh;
+    overflow-y:auto;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    animation:slideUp 0.4s ease;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    padding-bottom:20px;
+    border-bottom:2px solid var(--gray);
+}
+
+.modal-header h2{
+    color:var(--blue);
+    font-size:1.8rem;
+}
+
+.close-modal{
+    background:none;
+    border:none;
+    font-size:2rem;
+    color:#7f8c8d;
+    cursor:pointer;
+    transition: transform 0.2s ease;
+}
+
+.close-modal:hover{
+    transform:rotate(90deg);
+}
+
+@keyframes fadeInUp {
+    from{opacity:0; transform:translateY(50px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeIn {
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+@keyframes slideUp {
+    from{opacity:0; transform:translateY(50px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@media (max-width: 768px) {
+    .hero h1{
+        font-size:2.2rem;
+    }
+    
+    .response-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+    
+    .responses-section{
+        padding:40px 5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-box">
+        <img src="Logo.png" alt="WebCraft">
+    </div>
+</header>
+
+<section class="hero">
+    <div>
+        <h1>Réponses collectées</h1>
+        <p>Toutes les demandes de sites Internet soumises</p>
+    </div>
+</section>
+
+<section class="responses-section">
+    <div class="stats">
+        <div class="stat-card">
+            <span class="number" id="totalResponses">0</span>
+            <span class="label">Demandes reçues</span>
+        </div>
+        <div class="stat-card">
+            <span class="number" id="todayResponses">0</span>
+            <span class="label">Aujourd'hui</span>
+        </div>
+        <div class="stat-card">
+            <span class="number" id="weekResponses">0</span>
+            <span class="label">Cette semaine</span>
+        </div>
+    </div>
+
+    <!-- Added view toggle controls -->
+    <div class="view-controls">
+        <button class="view-btn active" id="cardViewBtn">Vue Cartes</button>
+        <button class="view-btn" id="tableViewBtn">Vue Tableau</button>
+    </div>
+
+    <div id="loadingMessage" class="loading">
+        Chargement des réponses...
+    </div>
+
+    <div id="responsesContainer" class="responses-container"></div>
+</section>
+
+<!-- Added modal for detailed view -->
+<div class="modal" id="detailModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Détails de la demande</h2>
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<footer>
+    © 2026 WebCraft — Tous droits réservés
+</footer>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyCo6gPiD77aN11VnOVJup4Br4D6-CubrWM",
+    authDomain: "formulaire-webcraft.firebaseapp.com",
+    databaseURL: "https://formulaire-webcraft-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "formulaire-webcraft",
+    storageBucket: "formulaire-webcraft.firebasestorage.app",
+    messagingSenderId: "210269846134",
+    appId: "1:210269846134:web:d4de743fba2d1b81c97d57"
+};
+
+// Initialiser Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// Header effet scroll
+window.addEventListener('scroll', ()=>{
+    const header = document.querySelector('header');
+    if(window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+});
+
+// Formater la date
+function formatDate(isoString) {
+    const date = new Date(isoString);
+    return date.toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// Calculer les statistiques
+function calculateStats(responses) {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekAgo = new Date(today);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    
+    let todayCount = 0;
+    let weekCount = 0;
+    
+    responses.forEach(response => {
+        const responseDate = new Date(response.timestamp);
+        if (responseDate >= today) {
+            todayCount++;
+        }
+        if (responseDate >= weekAgo) {
+            weekCount++;
+        }
+    });
+    
+    document.getElementById('totalResponses').textContent = responses.length;
+    document.getElementById('todayResponses').textContent = todayCount;
+    document.getElementById('weekResponses').textContent = weekCount;
+}
+
+let allResponses = [];
+let currentView = 'card'; // 'card' or 'table'
+
+function displayCardView(responses) {
+    const container = document.getElementById('responsesContainer');
+    
+    container.innerHTML = responses.map(response => {
+        const contenu = Array.isArray(response.data.contenu) 
+            ? response.data.contenu 
+            : (response.data.contenu ? [response.data.contenu] : []);
+            
+        const design = Array.isArray(response.data.design) 
+            ? response.data.design 
+            : (response.data.design ? [response.data.design] : []);
+        
+        return `
+            <div class="response-card">
+                <div class="response-header">
+                    <h3>${response.data.nom_projet || 'Sans nom'}</h3>
+                    <span class="response-date">${formatDate(response.data.timestamp)}</span>
+                </div>
+                
+                <div class="response-content">
+                    <div class="response-item">
+                        <div class="response-label">Pseudo Discord</div>
+                        <div class="response-value">${response.data.pseudo_discord}</div>
+                    </div>
+                    
+                    <div class="response-item">
+                        <div class="response-label">Type de site</div>
+                        <div class="response-value">${response.data.type_site}</div>
+                    </div>
+                    
+                    <div class="response-item">
+                        <div class="response-label">Objectif</div>
+                        <div class="response-value">${response.data.objectif_principal}</div>
+                    </div>
+                </div>
+                
+                <div class="response-actions">
+                    <button class="action-btn view-detail-btn" onclick='showDetailModal(${JSON.stringify(response).replace(/'/g, "&#39;")})'>
+                        Voir détails
+                    </button>
+                    <button class="action-btn delete-btn" onclick="deleteResponse('${response.id}')">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function displayTableView(responses) {
+    const container = document.getElementById('responsesContainer');
+    
+    container.innerHTML = `
+        <div class="table-view">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom du projet</th>
+                        <th>Pseudo Discord</th>
+                        <th>Type de site</th>
+                        <th>Date optimale</th>
+                        <th>Date soumission</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${responses.map(response => `
+                        <tr>
+                            <td><strong>${response.data.nom_projet || 'Sans nom'}</strong></td>
+                            <td>${response.data.pseudo_discord}</td>
+                            <td>${response.data.type_site}</td>
+                            <td>${response.data.date_optimale}</td>
+                            <td>${formatDate(response.data.timestamp)}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="view-detail-btn" onclick='showDetailModal(${JSON.stringify(response).replace(/'/g, "&#39;")})'>
+                                        Détails
+                                    </button>
+                                    <button class="delete-btn" onclick="deleteResponse('${response.id}')">
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+function displayResponses(responses) {
+    const container = document.getElementById('responsesContainer');
+    const loadingMessage = document.getElementById('loadingMessage');
+    
+    loadingMessage.style.display = 'none';
+    allResponses = responses;
+    
+    if (responses.length === 0) {
+        container.innerHTML = `
+            <div class="no-responses">
+                <h3>Aucune réponse pour le moment</h3>
+                <p>Les demandes soumises via le formulaire apparaîtront ici.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    calculateStats(responses);
+    
+    if (currentView === 'card') {
+        displayCardView(responses);
+    } else {
+        displayTableView(responses);
+    }
+}
+
+function deleteResponse(responseId) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) {
+        database.ref('demandes/' + responseId).remove()
+            .then(() => {
+                console.log('[v0] Response deleted successfully');
+            })
+            .catch((error) => {
+                console.error('[v0] Error deleting response:', error);
+                alert('Erreur lors de la suppression. Veuillez réessayer.');
+            });
+    }
+}
+
+function showDetailModal(response) {
+    const modal = document.getElementById('detailModal');
+    const modalBody = document.getElementById('modalBody');
+    
+    const contenu = Array.isArray(response.data.contenu) 
+        ? response.data.contenu 
+        : (response.data.contenu ? [response.data.contenu] : []);
+        
+    const design = Array.isArray(response.data.design) 
+        ? response.data.design 
+        : (response.data.design ? [response.data.design] : []);
+    
+    const contenuOther = response.data.contenu_autre || '';
+    const typeSiteOther = response.data.type_site_autre || '';
+    
+    modalBody.innerHTML = `
+        <div class="response-content">
+            <div class="response-item">
+                <div class="response-label">Date de soumission</div>
+                <div class="response-value">${formatDate(response.data.timestamp)}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Pseudo Discord</div>
+                <div class="response-value">${response.data.pseudo_discord}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Âge</div>
+                <div class="response-value">${response.data.age}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Nom du projet</div>
+                <div class="response-value">${response.data.nom_projet || 'Sans nom'}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Type de site</div>
+                <div class="response-value">${response.data.type_site}${typeSiteOther ? ' : ' + typeSiteOther : ''}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Objectif principal</div>
+                <div class="response-value">${response.data.objectif_principal}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Contenu</div>
+                <div class="response-value multiple">
+                    ${contenu.map(c => `<span>${c}</span>`).join('')}
+                    ${contenuOther ? `<span>${contenuOther}</span>` : ''}
+                </div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Éléments fournis</div>
+                <div class="response-value">${response.data.elements_fournis}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Source d'inspiration</div>
+                <div class="response-value">${response.data.source_inspiration}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Design souhaité</div>
+                <div class="response-value multiple">
+                    ${design.map(d => `<span>${d}</span>`).join('')}
+                </div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Date optimale de mise en ligne</div>
+                <div class="response-value">${response.data.date_optimale}</div>
+            </div>
+            
+            <div class="response-item">
+                <div class="response-label">Date maximale de mise en ligne</div>
+                <div class="response-value">${response.data.date_maximale}</div>
+            </div>
+            
+            ${response.data.commentaires ? `
+            <div class="response-item">
+                <div class="response-label">Commentaires supplémentaires</div>
+                <div class="response-value">${response.data.commentaires}</div>
+            </div>
+            ` : ''}
+        </div>
+    `;
+    
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('detailModal').classList.remove('active');
+}
+
+document.getElementById('cardViewBtn').addEventListener('click', () => {
+    currentView = 'card';
+    document.getElementById('cardViewBtn').classList.add('active');
+    document.getElementById('tableViewBtn').classList.remove('active');
+    displayResponses(allResponses);
+});
+
+document.getElementById('tableViewBtn').addEventListener('click', () => {
+    currentView = 'table';
+    document.getElementById('tableViewBtn').classList.add('active');
+    document.getElementById('cardViewBtn').classList.remove('active');
+    displayResponses(allResponses);
+});
+
+document.getElementById('detailModal').addEventListener('click', (e) => {
+    if (e.target.id === 'detailModal') {
+        closeModal();
+    }
+});
+
+// Charger les réponses
+database.ref('demandes').on('value', (snapshot) => {
+    const responses = [];
+    
+    snapshot.forEach((childSnapshot) => {
+        responses.push({
+            id: childSnapshot.key,
+            data: childSnapshot.val()
+        });
+    });
+    
+    // Trier par date décroissante (plus récent en premier)
+    responses.sort((a, b) => {
+        return new Date(b.data.timestamp) - new Date(a.data.timestamp);
+    });
+    
+    displayResponses(responses);
+});
+</script>
+
+</body>
+</html>
