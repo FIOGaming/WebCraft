@@ -111,6 +111,31 @@ nav a:hover{
     animation:fadeInUp 1s ease forwards;
 }
 
+/* BOUTON HERO */
+.hero-btn{
+    display:inline-block;
+    margin-top:40px;
+    padding:16px 45px;
+    border-radius:50px;
+    background:white;
+    color:var(--dark);
+    text-decoration:none;
+    font-weight:600;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.hero-btn:hover{
+    transform:scale(1.05);
+    background:#f0f0f0;
+}
+
+/* ✅ TEXTE SOUS LE BOUTON – CORRIGÉ */
+.hero p.hero-note{
+    margin-top:10px;
+    font-size:0.55rem !important; /* vraiment petit */
+    opacity:0.7;
+}
+
 /* SECTIONS */
 section{
     padding:120px 8%;
@@ -201,7 +226,7 @@ section.show{
 }
 
 .contact .section-title h2{
-    color:var(--white); /* Texte "Contactez-nous" en blanc */
+    color:var(--white);
 }
 
 .contact a{
@@ -266,13 +291,11 @@ form button:hover{
     transform:scale(1.05);
 }
 
-/* Message de confirmation */
 #formMessage{
     margin-top:20px;
     color:limegreen;
     font-weight:600;
     display:none;
-    transition: opacity 0.3s ease;
 }
 
 /* FOOTER */
@@ -284,48 +307,9 @@ footer{
     font-size:0.95rem;
 }
 
-/* Animations */
 @keyframes fadeInUp {
     from{opacity:0; transform:translateY(50px);}
     to{opacity:1; transform:translateY(0);}
-}
-
-/* Ajout du style pour le bouton de chat */
-.chat-btn{
-    position:fixed;
-    bottom:30px;
-    right:30px;
-    padding:18px 35px;
-    background:linear-gradient(135deg,var(--dark),var(--blue));
-    color:white;
-    text-decoration:none;
-    border-radius:50px;
-    font-weight:600;
-    box-shadow:0 10px 30px rgba(43,93,153,0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    z-index:999;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.chat-btn:hover{
-    transform:translateY(-5px);
-    box-shadow:0 15px 40px rgba(43,93,153,0.5);
-}
-
-.chat-icon{
-    width:24px;
-    height:24px;
-}
-
-@media (max-width: 768px) {
-    .chat-btn{
-        bottom:20px;
-        right:20px;
-        padding:15px 25px;
-        font-size:0.9rem;
-    }
 }
 </style>
 </head>
@@ -347,6 +331,14 @@ footer{
     <div>
         <h1>WebCraft</h1>
         <p>Des sites web modernes, élégants et performants, optimisés pour tous vos besoins.</p>
+
+        <a href="https://discord.gg/cB2Nbdjfru" target="_blank" class="hero-btn">
+            Commander (via Discord)
+        </a>
+
+        <p class="hero-note">
+            Pas Discord ? Contactez-nous par mail dans la section contact.
+        </p>
     </div>
 </section>
 
@@ -387,12 +379,10 @@ footer{
     </div>
 </section>
 
-
 <footer>
     © 2026 WebCraft — Tout droits réservés
 </footer>
 
-<!-- EmailJS -->
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
 (function(){
@@ -411,11 +401,9 @@ document.getElementById("contactForm").addEventListener("submit", function(event
         setTimeout(() => { msg.style.display = "none"; }, 5000);
     }, function(error) {
         alert("Une erreur est survenue. Veuillez réessayer.");
-        console.error(error);
     });
 });
 
-// Scroll animations pour contenu
 const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
         if(entry.isIntersecting){
@@ -428,7 +416,6 @@ document.querySelectorAll('section, .card, form').forEach(el=>{
     observer.observe(el);
 });
 
-// Header effet scroll
 window.addEventListener('scroll', ()=>{
     const header = document.querySelector('header');
     if(window.scrollY > 50) header.classList.add('scrolled');
