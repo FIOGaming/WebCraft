@@ -268,73 +268,69 @@ footer{
 <section class="form-section">
     <form id="demandeForm">
         
-        <!-- Pseudo Discord -->
+        <!-- Added email as first question -->
         <div class="form-group">
-            <label>Pseudo Discord :<span class="required">*</span></label>
-            <input type="text" name="pseudo_discord" required>
+            <label>Adresse e-mail :<span class="required">*</span></label>
+            <input type="email" name="email" required placeholder="votre.email@exemple.com">
         </div>
 
-        <!-- Age -->
+        <!-- Updated Age field with new options -->
         <div class="form-group">
-            <label>Age :<span class="required">*</span></label>
+            <label>Âge :<span class="required">*</span></label>
             <div class="radio-group">
                 <label>
-                    <input type="radio" name="age" value="-9 ans" required>
-                    -9 ans
+                    <input type="radio" name="age" value="-15 ans" required>
+                    -15 ans
                 </label>
                 <label>
-                    <input type="radio" name="age" value="10 - 16 ans" required>
-                    10 - 16 ans
+                    <input type="radio" name="age" value="15-18 ans" required>
+                    15-18 ans
                 </label>
                 <label>
-                    <input type="radio" name="age" value="17 - 18 ans" required>
-                    17 - 18 ans
-                </label>
-                <label>
-                    <input type="radio" name="age" value="19+" required>
-                    19+
+                    <input type="radio" name="age" value="+18 ans" required>
+                    +18 ans
                 </label>
             </div>
         </div>
 
-        <!-- Nom du site/projet -->
+        <!-- Nom du site/projet field -->
         <div class="form-group">
             <label>Nom du site/projet<span class="required">*</span></label>
             <input type="text" name="nom_projet" required>
         </div>
 
-        <!-- Type de site -->
+        <!-- Design with new multiple options -->
         <div class="form-group">
-            <label>Type de site :<span class="required">*</span></label>
-            <div class="radio-group">
+            <label>Design :<span class="required">*</span></label>
+            <div class="checkbox-group">
                 <label>
-                    <input type="radio" name="type_site" value="Affichage" required>
-                    Affichage
+                    <input type="checkbox" name="design" value="Simple">
+                    Simple
                 </label>
                 <label>
-                    <input type="radio" name="type_site" value="Informations" required>
-                    Informations
+                    <input type="checkbox" name="design" value="Moderne/Minimaliste">
+                    Moderne/Minimaliste
                 </label>
                 <label>
-                    <input type="radio" name="type_site" value="Ventes" required>
-                    Ventes
+                    <input type="checkbox" name="design" value="Elaboré">
+                    Elaboré
                 </label>
                 <label>
-                    <input type="radio" name="type_site" value="Réseaux" required>
-                    Réseaux
+                    <input type="checkbox" name="design" value="Coloré" id="design_colore">
+                    Coloré
                 </label>
                 <label>
-                    <input type="radio" name="type_site" value="Autre" id="type_autre" required>
-                    Autre
+                    <input type="checkbox" name="design" value="Noir et blanc">
+                    Noir et blanc
                 </label>
             </div>
-            <input type="text" id="type_site_autre" class="other-input" placeholder="Précisez...">
+            <input type="text" id="design_colore_text" class="other-input" placeholder="Précisez les couleurs...">
         </div>
 
-        <!-- Objectif principal -->
+        <!-- New field: Décrivez vos attentes -->
         <div class="form-group">
-            <label>Objectif principal du site (ex : présenter, jouer, etc...)<span class="required">*</span></label>
-            <input type="text" name="objectif_principal" required>
+            <label>Décrivez vos attentes en quelques phrases :<span class="required">*</span></label>
+            <textarea name="attentes" required placeholder="Décrivez ce que vous attendez de votre site web..."></textarea>
         </div>
 
         <!-- Contenu -->
@@ -376,7 +372,7 @@ footer{
             </div>
         </div>
 
-        <!-- Source d'inspiration -->
+        <!-- Source d'inspiration with conditional field -->
         <div class="form-group">
             <label>Votre idée vient-elle de vous, ou il y a une source d'inspiration ?<span class="required">*</span></label>
             <div class="radio-group">
@@ -385,37 +381,11 @@ footer{
                     Cela vient de moi
                 </label>
                 <label>
-                    <input type="radio" name="source_inspiration" value="Cela est inspiré" required>
+                    <input type="radio" name="source_inspiration" value="Cela est inspiré" id="inspiration_oui" required>
                     Cela est inspiré
                 </label>
             </div>
-        </div>
-
-        <!-- Design souhaité -->
-        <div class="form-group">
-            <label>Design souhaité<span class="required">*</span></label>
-            <div class="checkbox-group">
-                <label>
-                    <input type="checkbox" name="design" value="Simple">
-                    Simple
-                </label>
-                <label>
-                    <input type="checkbox" name="design" value="Minimaliste">
-                    Minimaliste
-                </label>
-                <label>
-                    <input type="checkbox" name="design" value="Elaboré">
-                    Elaboré
-                </label>
-                <label>
-                    <input type="checkbox" name="design" value="Coloré">
-                    Coloré
-                </label>
-                <label>
-                    <input type="checkbox" name="design" value="Noir et blanc">
-                    Noir et blanc
-                </label>
-            </div>
+            <input type="text" id="inspiration_source" class="other-input" placeholder="De qui/quoi ?">
         </div>
 
         <!-- Date optimale -->
@@ -436,6 +406,25 @@ footer{
             <textarea name="commentaires" placeholder="Ajoutez des informations supplémentaires..."></textarea>
         </div>
 
+        <!-- Pack selection field -->
+        <div class="form-group">
+            <label>Pack sélectionné :<span class="required">*</span></label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="pack" value="Pack Simple" required>
+                    Pack Simple (5-20€)
+                </label>
+                <label>
+                    <input type="radio" name="pack" value="Pack Pro" required>
+                    Pack Pro (10-30€)
+                </label>
+                <label>
+                    <input type="radio" name="pack" value="Pack Premium" required>
+                    Pack Premium (20-45€)
+                </label>
+            </div>
+        </div>
+
         <button type="submit" class="submit-btn" id="submitBtn">Envoyer la demande</button>
         
         <div id="formMessage"></div>
@@ -446,7 +435,6 @@ footer{
     © 2026 WebCraft — Tous droits réservés
 </footer>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
@@ -461,49 +449,54 @@ const firebaseConfig = {
     appId: "1:210269846134:web:d4de743fba2d1b81c97d57"
 };
 
-// Initialiser Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// Gérer l'affichage des champs "Autre"
-document.getElementById('type_autre').addEventListener('change', function() {
-    const otherInput = document.getElementById('type_site_autre');
-    otherInput.style.display = this.checked ? 'block' : 'none';
-});
+const urlParams = new URLSearchParams(window.location.search);
+const selectedPack = urlParams.get('pack');
+if (selectedPack) {
+    const packRadio = document.querySelector(`input[name="pack"][value="${selectedPack}"]`);
+    if (packRadio) {
+        packRadio.checked = true;
+    }
+}
 
-document.querySelectorAll('input[name="type_site"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-        const otherInput = document.getElementById('type_site_autre');
-        if (this.id !== 'type_autre') {
-            otherInput.style.display = 'none';
-            otherInput.value = '';
-        }
-    });
+document.getElementById('design_colore').addEventListener('change', function() {
+    document.getElementById('design_colore_text').style.display = this.checked ? 'block' : 'none';
 });
 
 document.getElementById('contenu_autre').addEventListener('change', function() {
     const otherInput = document.getElementById('contenu_autre_text');
     otherInput.style.display = this.checked ? 'block' : 'none';
-    if (!this.checked) {
-        otherInput.value = '';
-    }
+    if (!this.checked) otherInput.value = '';
 });
 
-// Header effet scroll
+document.getElementById('inspiration_oui').addEventListener('change', function() {
+    document.getElementById('inspiration_source').style.display = this.checked ? 'block' : 'none';
+});
+
+document.querySelectorAll('input[name="source_inspiration"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const sourceInput = document.getElementById('inspiration_source');
+        if (this.id !== 'inspiration_oui') {
+            sourceInput.style.display = 'none';
+            sourceInput.value = '';
+        }
+    });
+});
+
 window.addEventListener('scroll', ()=>{
     const header = document.querySelector('header');
     if(window.scrollY > 50) header.classList.add('scrolled');
     else header.classList.remove('scrolled');
 });
 
-// Soumission du formulaire
 document.getElementById('demandeForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const submitBtn = document.getElementById('submitBtn');
     const formMessage = document.getElementById('formMessage');
     
-    // Validation for at least one checkbox in "Contenu" section
     const contenuChecked = document.querySelectorAll('input[name="contenu"]:checked');
     if (contenuChecked.length === 0) {
         formMessage.textContent = '✗ Veuillez sélectionner au moins un élément de contenu.';
@@ -512,7 +505,6 @@ document.getElementById('demandeForm').addEventListener('submit', function(e) {
         return;
     }
     
-    // Validation for at least one checkbox in "Design souhaité" section
     const designChecked = document.querySelectorAll('input[name="design"]:checked');
     if (designChecked.length === 0) {
         formMessage.textContent = '✗ Veuillez sélectionner au moins un type de design.';
@@ -524,52 +516,54 @@ document.getElementById('demandeForm').addEventListener('submit', function(e) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
     
-    // Récupérer les données du formulaire
     const formData = new FormData(this);
     
     const contenuValues = Array.from(contenuChecked).map(cb => cb.value);
     const designValues = Array.from(designChecked).map(cb => cb.value);
     
     const data = {
-        pseudo_discord: formData.get('pseudo_discord'),
+        email: formData.get('email'),
         age: formData.get('age'),
         nom_projet: formData.get('nom_projet'),
-        type_site: formData.get('type_site'),
-        type_site_autre: document.getElementById('type_site_autre').value || '',
-        objectif_principal: formData.get('objectif_principal'),
+        design: designValues,
+        design_colore: document.getElementById('design_colore_text').value || '',
+        attentes: formData.get('attentes'),
         contenu: contenuValues,
         contenu_autre: document.getElementById('contenu_autre_text').value || '',
         elements_fournis: formData.get('elements_fournis'),
         source_inspiration: formData.get('source_inspiration'),
-        design: designValues,
+        inspiration_source: document.getElementById('inspiration_source').value || '',
         date_optimale: formData.get('date_optimale'),
         date_maximale: formData.get('date_maximale'),
         commentaires: formData.get('commentaires') || '',
-        timestamp: new Date().toISOString()
+        pack: formData.get('pack'),
+        timestamp: new Date().toISOString(),
+        etat: 'En attente',
+        montant: '',
+        dateMiseEnLigne: '',
+        questions: []
     };
     
-    // Sauvegarder dans Firebase
     database.ref('demandes').push(data)
-        .then(() => {
-            formMessage.textContent = '✓ Votre demande a été envoyée avec succès !';
+        .then((ref) => {
+            const demandeId = ref.key;
+            
+            console.log('[v0] Email should be sent to:', data.email);
+            console.log('[v0] Tracking link:', `${window.location.origin}/suivi.html?id=${demandeId}`);
+            
+            formMessage.textContent = '✓ Votre demande a été envoyée avec succès ! Redirection...';
             formMessage.className = 'success';
             formMessage.style.display = 'block';
             
-            this.reset();
-            document.getElementById('type_site_autre').style.display = 'none';
-            document.getElementById('contenu_autre_text').style.display = 'none';
-            
             setTimeout(() => {
-                formMessage.style.display = 'none';
-            }, 5000);
+                window.location.href = `suivi.html?id=${demandeId}`;
+            }, 2000);
         })
         .catch((error) => {
             console.error('Erreur:', error);
             formMessage.textContent = '✗ Une erreur est survenue. Veuillez réessayer.';
             formMessage.className = 'error';
             formMessage.style.display = 'block';
-        })
-        .finally(() => {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Envoyer la demande';
         });

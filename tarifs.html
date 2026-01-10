@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Tarifs — WebCraft</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --dark:#142C48;
+    --blue:#2B5D99;
+    --white:#ffffff;
+    --light:#f5f8fc;
+    --gray:#e0e6f0;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:linear-gradient(180deg,#ffffff,#f5f8fc);
+    color:var(--dark);
+    overflow-x:hidden;
+}
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:15px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,0.9);
+    backdrop-filter:blur(12px);
+    z-index:1000;
+    transition: all 0.3s ease;
+}
+
+header.scrolled{
+    background:rgba(255,255,255,1);
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.logo-box img{
+    height:50px;
+}
+
+.hero{
+    min-height:40vh;
+    background:linear-gradient(135deg,var(--dark),var(--blue));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 10% 60px;
+    color:var(--white);
+}
+
+.hero h1{
+    font-size:3.2rem;
+    font-weight:700;
+    margin-bottom:20px;
+    animation:fadeInUp 0.8s ease forwards;
+}
+
+.hero p{
+    font-size:1.1rem;
+    animation:fadeInUp 1s ease forwards;
+}
+
+.pricing-section{
+    padding:80px 8%;
+    max-width:1200px;
+    margin:auto;
+}
+
+.packs-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    gap:35px;
+    margin-bottom:60px;
+}
+
+.pack-card{
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align:center;
+}
+
+.pack-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 25px 60px rgba(0,0,0,0.15);
+}
+
+.pack-card.popular{
+    border:3px solid var(--blue);
+    position:relative;
+}
+
+.pack-card.popular::before{
+    content:'⭐ POPULAIRE';
+    position:absolute;
+    top:-15px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--blue);
+    color:white;
+    padding:5px 20px;
+    border-radius:20px;
+    font-size:0.85rem;
+    font-weight:700;
+}
+
+.pack-name{
+    font-size:2rem;
+    font-weight:700;
+    color:var(--dark);
+    margin-bottom:15px;
+}
+
+.pack-price{
+    font-size:2.5rem;
+    font-weight:700;
+    color:var(--blue);
+    margin-bottom:25px;
+}
+
+.pack-features{
+    text-align:left;
+    margin-bottom:30px;
+}
+
+.pack-features li{
+    list-style:none;
+    padding:12px 0;
+    font-size:1rem;
+    border-bottom:1px solid var(--gray);
+}
+
+.pack-features li::before{
+    content:'✓ ';
+    color:#27ae60;
+    font-weight:bold;
+    margin-right:10px;
+}
+
+.select-pack-btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(135deg,var(--dark),var(--blue));
+    color:white;
+    font-weight:600;
+    font-size:1.1rem;
+    cursor:pointer;
+    transition: transform 0.2s ease;
+}
+
+.select-pack-btn:hover{
+    transform:scale(1.05);
+}
+
+.options-section{
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
+    margin-bottom:40px;
+}
+
+.options-section h2{
+    font-size:2rem;
+    color:var(--dark);
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.option-item{
+    padding:20px;
+    border-bottom:1px solid var(--gray);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.option-item:last-child{
+    border-bottom:none;
+}
+
+.option-name{
+    font-weight:600;
+    font-size:1.1rem;
+}
+
+.option-price{
+    color:var(--blue);
+    font-weight:700;
+    font-size:1.2rem;
+}
+
+footer{
+    background:#081626;
+    color:white;
+    text-align:center;
+    padding:35px;
+    font-size:0.95rem;
+}
+
+@keyframes fadeInUp {
+    from{opacity:0; transform:translateY(50px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@media (max-width: 768px) {
+    .hero h1{
+        font-size:2.2rem;
+    }
+    
+    .packs-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-box">
+        <img src="Logo.png" alt="WebCraft">
+    </div>
+</header>
+
+<section class="hero">
+    <div>
+        <h1>Nos Tarifs</h1>
+        <p>Choisissez le pack qui correspond à vos besoins</p>
+    </div>
+</section>
+
+<section class="pricing-section">
+    <div class="packs-grid">
+        <div class="pack-card">
+            <div class="pack-name">Pack Simple</div>
+            <div class="pack-price">5-20€</div>
+            <ul class="pack-features">
+                <li>3 Pages maximum</li>
+                <li>Pas de sauvegarde en ligne</li>
+                <li>Fonctionnalités simples</li>
+                <li>Design basique</li>
+            </ul>
+            <button class="select-pack-btn" onclick="selectPack('Pack Simple')">Choisir ce pack</button>
+        </div>
+        
+        <div class="pack-card popular">
+            <div class="pack-name">Pack Pro</div>
+            <div class="pack-price">10-30€</div>
+            <ul class="pack-features">
+                <li>7 Pages maximum</li>
+                <li>Animations fluides</li>
+                <li>Fonctionnalités avancées</li>
+                <li>Design professionnel</li>
+            </ul>
+            <button class="select-pack-btn" onclick="selectPack('Pack Pro')">Choisir ce pack</button>
+        </div>
+        
+        <div class="pack-card">
+            <div class="pack-name">Pack Premium</div>
+            <div class="pack-price">20-45€</div>
+            <ul class="pack-features">
+                <li>15 Pages maximum</li>
+                <li>Sauvegarde en ligne</li>
+                <li>Fonctionnalités poussées</li>
+                <li>Animations poussées</li>
+                <li>Sécurité avancée</li>
+            </ul>
+            <button class="select-pack-btn" onclick="selectPack('Pack Premium')">Choisir ce pack</button>
+        </div>
+    </div>
+    
+    <div class="options-section">
+        <h2>Options supplémentaires</h2>
+        <div class="option-item">
+            <div>
+                <div class="option-name">Maintenance</div>
+                <div>Correction, ajouts, mise à jour</div>
+            </div>
+            <div class="option-price">3€/h</div>
+        </div>
+        <div class="option-item">
+            <div>
+                <div class="option-name">Système de paiement</div>
+                <div>Intégration Stripe, PayPal...</div>
+            </div>
+            <div class="option-price">20-100€</div>
+        </div>
+        <div class="option-item">
+            <div>
+                <div class="option-name">Traduction</div>
+                <div>Support multi-langues</div>
+            </div>
+            <div class="option-price">30-100€</div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2026 WebCraft — Tous droits réservés
+</footer>
+
+<script>
+window.addEventListener('scroll', ()=>{
+    const header = document.querySelector('header');
+    if(window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+});
+
+function selectPack(packName) {
+    window.location.href = `formulaire.html?pack=${encodeURIComponent(packName)}`;
+}
+</script>
+
+</body>
+</html>
