@@ -393,9 +393,11 @@ function loadCommandeData() {
         
         if (!data) {
             document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('suiviContent').style.display = 'none';
             return;
         }
         
+        document.getElementById('errorMessage').style.display = 'none';
         document.getElementById('suiviContent').style.display = 'block';
         displayCommandeData(data);
     });

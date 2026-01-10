@@ -268,10 +268,10 @@ footer{
 <section class="form-section">
     <form id="demandeForm">
         
-        <!-- Added email as first question -->
+        <!-- Changed email input type from "email" to "text" and made it small like other fields -->
         <div class="form-group">
             <label>Adresse e-mail :<span class="required">*</span></label>
-            <input type="email" name="email" required placeholder="votre.email@exemple.com">
+            <input type="text" name="email" required placeholder="votre.email@exemple.com">
         </div>
 
         <!-- Updated Age field with new options -->
@@ -437,8 +437,14 @@ footer{
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<!-- Added EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <script>
+(function(){
+    emailjs.init("ge42M3Tp_35vqb8_y"); // Remplacez par votre clé publique EmailJS
+})();
+
 const firebaseConfig = {
     apiKey: "AIzaSyCo6gPiD77aN11VnOVJup4Br4D6-CubrWM",
     authDomain: "formulaire-webcraft.firebaseapp.com",
@@ -497,6 +503,14 @@ document.getElementById('demandeForm').addEventListener('submit', function(e) {
     const submitBtn = document.getElementById('submitBtn');
     const formMessage = document.getElementById('formMessage');
     
+    const email = document.querySelector('input[name="email"]').value.trim();
+    if (!email || !email.includes('@') || !email.includes('.')) {
+        formMessage.textContent = '✗ Veuillez entrer une adresse e-mail valide.';
+        formMessage.className = 'error';
+        formMessage.style.display = 'block';
+        return;
+    }
+    
     const contenuChecked = document.querySelectorAll('input[name="contenu"]:checked');
     if (contenuChecked.length === 0) {
         formMessage.textContent = '✗ Veuillez sélectionner au moins un élément de contenu.';
@@ -522,7 +536,7 @@ document.getElementById('demandeForm').addEventListener('submit', function(e) {
     const designValues = Array.from(designChecked).map(cb => cb.value);
     
     const data = {
-        email: formData.get('email'),
+        email: email,
         age: formData.get('age'),
         nom_projet: formData.get('nom_projet'),
         design: designValues,
@@ -544,23 +558,45 @@ document.getElementById('demandeForm').addEventListener('submit', function(e) {
         questions: []
     };
     
+    console.log('[v0] Email being sent to:', email);
+    console.log('[v0] Tracking link will be:', `https://webcraft-fr.vercel.app/suivi.html?id=GENERATED_ID`);
+    
     database.ref('demandes').push(data)
         .then((ref) => {
             const demandeId = ref.key;
+            const trackingLink = `https://webcraft-fr.vercel.app/suivi.html?id=${demandeId}`;
             
-            console.log('[v0] Email should be sent to:', data.email);
-            console.log('[v0] Tracking link:', `${window.location.origin}/suivi.html?id=${demandeId}`);
+            console.log('[v0] Sending email to:', email);
+            console.log('[v0] Tracking link:', trackingLink);
             
-            formMessage.textContent = '✓ Votre demande a été envoyée avec succès ! Redirection...';
-            formMessage.className = 'success';
-            formMessage.style.display = 'block';
-            
-            setTimeout(() => {
-                window.location.href = `suivi.html?id=${demandeId}`;
-            }, 2000);
+            emailjs.send("service_72h9u38", "template_f75ef5v", {
+                to_email: email,
+                tracking_link: trackingLink,
+                nom_projet: data.nom_projet
+            })
+            .then((response) => {
+                console.log('[v0] Email sent successfully:', response);
+                formMessage.textContent = '✓ Votre demande a été envoyée avec succès ! Un email avec le lien de suivi vous a été envoyé. Redirection...';
+                formMessage.className = 'success';
+                formMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    window.location.href = `suivi.html?id=${demandeId}`;
+                }, 3000);
+            })
+            .catch((emailError) => {
+                console.error('[v0] Erreur envoi email:', emailError);
+                formMessage.textContent = '✓ Votre demande a été envoyée avec succès ! Redirection...';
+                formMessage.className = 'success';
+                formMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    window.location.href = `suivi.html?id=${demandeId}`;
+                }, 2000);
+            });
         })
         .catch((error) => {
-            console.error('Erreur:', error);
+            console.error('[v0] Erreur Firebase:', error);
             formMessage.textContent = '✗ Une erreur est survenue. Veuillez réessayer.';
             formMessage.className = 'error';
             formMessage.style.display = 'block';
