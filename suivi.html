@@ -423,6 +423,14 @@ function displayCommandeData(data) {
         </div>
     ` : '';
     
+    const paymentButton = data.etat === 'Attente du paiement' ? `
+        <div style="text-align:center;margin-top:30px;">
+            <button onclick="window.location.href='paiement.html?id=${demandeId}'" style="padding:18px 45px;background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;border-radius:15px;font-size:1.2rem;font-weight:700;cursor:pointer;box-shadow:0 8px 25px rgba(46,204,113,0.4);transition:all 0.3s ease;">
+                💳 Payer maintenant
+            </button>
+        </div>
+    ` : '';
+    
     const questionsHtml = data.questions && data.questions.length > 0
         ? data.questions.map((q, index) => `
             <div class="question-item">
@@ -469,6 +477,7 @@ function displayCommandeData(data) {
                     <div class="info-value">${data.pack}</div>
                 </div>
             </div>
+            ${paymentButton}
         </div>
         
         <div class="questions-section">

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Paiement — WebCraft</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --dark:#142C48;
+    --blue:#2B5D99;
+    --white:#ffffff;
+    --light:#f5f8fc;
+    --gray:#e0e6f0;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:linear-gradient(180deg,#ffffff,#f5f8fc);
+    color:var(--dark);
+    overflow-x:hidden;
+}
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:15px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,0.9);
+    backdrop-filter:blur(12px);
+    z-index:1000;
+    transition: all 0.3s ease;
+}
+
+header.scrolled{
+    background:rgba(255,255,255,1);
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.logo-box img{
+    height:50px;
+}
+
+.hero{
+    min-height:40vh;
+    background:linear-gradient(135deg,#27ae60,#2ecc71);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 10% 60px;
+    color:var(--white);
+}
+
+.hero h1{
+    font-size:3.2rem;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:1.1rem;
+}
+
+.payment-section{
+    padding:80px 8%;
+    max-width:800px;
+    margin:auto;
+}
+
+.payment-card{
+    background:white;
+    padding:50px;
+    border-radius:25px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
+}
+
+.amount-display{
+    text-align:center;
+    padding:40px;
+    background:linear-gradient(135deg,var(--light),#e8f5e9);
+    border-radius:20px;
+    margin-bottom:40px;
+    border:3px solid #27ae60;
+}
+
+.amount-label{
+    font-size:1.2rem;
+    color:#7f8c8d;
+    margin-bottom:15px;
+}
+
+.amount-value{
+    font-size:3.5rem;
+    font-weight:700;
+    color:#27ae60;
+}
+
+.payment-info{
+    background:var(--light);
+    padding:35px;
+    border-radius:20px;
+    margin-bottom:30px;
+    border-left:5px solid var(--blue);
+}
+
+.payment-info h3{
+    color:var(--dark);
+    font-size:1.6rem;
+    margin-bottom:25px;
+}
+
+.info-row{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:15px;
+    margin-bottom:15px;
+    padding:15px;
+    background:white;
+    border-radius:12px;
+}
+
+.info-row-label{
+    font-weight:600;
+    color:var(--dark);
+}
+
+.info-row-value{
+    color:#555;
+    font-family:monospace;
+    font-size:1.1rem;
+    word-break:break-all;
+}
+
+.copy-btn{
+    padding:8px 15px;
+    background:var(--blue);
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:0.9rem;
+    font-weight:600;
+    transition:all 0.3s ease;
+}
+
+.copy-btn:hover{
+    background:var(--dark);
+    transform:scale(1.05);
+}
+
+.instructions{
+    background:#fff9e6;
+    padding:30px;
+    border-radius:15px;
+    border-left:5px solid #ffd32a;
+    margin-bottom:30px;
+}
+
+.instructions h4{
+    color:#8b6914;
+    margin-bottom:15px;
+    font-size:1.3rem;
+}
+
+.instructions ol{
+    margin-left:25px;
+    color:#333;
+    line-height:2;
+}
+
+.instructions li{
+    margin-bottom:10px;
+}
+
+.back-btn{
+    display:inline-block;
+    padding:15px 35px;
+    background:var(--dark);
+    color:white;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+    font-size:1rem;
+    text-decoration:none;
+    transition:all 0.3s ease;
+}
+
+.back-btn:hover{
+    background:var(--blue);
+    transform:scale(1.05);
+}
+
+.error{
+    text-align:center;
+    padding:50px;
+    font-size:1.2rem;
+    color:#e74c3c;
+}
+
+.loading{
+    text-align:center;
+    padding:50px;
+    font-size:1.2rem;
+    color:var(--blue);
+}
+
+footer{
+    background:#081626;
+    color:white;
+    text-align:center;
+    padding:35px;
+    font-size:0.95rem;
+}
+
+@media (max-width: 768px) {
+    .hero h1{
+        font-size:2.2rem;
+    }
+    
+    .amount-value{
+        font-size:2.5rem;
+    }
+    
+    .info-row{
+        grid-template-columns:1fr;
+    }
+    
+    .payment-card{
+        padding:30px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-box">
+        <img src="Logo.png" alt="WebCraft">
+    </div>
+</header>
+
+<section class="hero">
+    <div>
+        <h1>Paiement de votre commande</h1>
+        <p>Suivez les instructions ci-dessous pour finaliser votre commande</p>
+    </div>
+</section>
+
+<section class="payment-section">
+    <div id="loadingMessage" class="loading">Chargement des informations de paiement...</div>
+    <div id="errorMessage" class="error" style="display:none;">Cette page n'est pas accessible. Veuillez revenir à votre suivi de commande.</div>
+    <div id="paymentContent" style="display:none;"></div>
+</section>
+
+<footer>
+    © 2026 WebCraft — Tous droits réservés
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<!-- Added EmailJS SDK for sending payment emails -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script>
+(function(){
+    emailjs.init("ge42M3Tp_35vqb8_y");
+})();
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCo6gPiD77aN11VnOVJup4Br4D6-CubrWM",
+    authDomain: "formulaire-webcraft.firebaseapp.com",
+    databaseURL: "https://formulaire-webcraft-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "formulaire-webcraft",
+    storageBucket: "formulaire-webcraft.firebasestorage.app",
+    messagingSenderId: "210269846134",
+    appId: "1:210269846134:web:d4de743fba2d1b81c97d57"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+const RIB_INFO = {
+    titulaire: "METTRE VOTRE NOM ICI",
+    iban: "FR76 XXXX XXXX XXXX XXXX XXXX XXX",
+    bic: "XXXXFRPPXXX",
+    banque: "METTRE VOTRE BANQUE ICI"
+};
+
+window.addEventListener('scroll', ()=>{
+    const header = document.querySelector('header');
+    if(window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+});
+
+const urlParams = new URLSearchParams(window.location.search);
+const demandeId = urlParams.get('id');
+
+if (!demandeId) {
+    document.getElementById('loadingMessage').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'block';
+} else {
+    loadPaymentData();
+}
+
+function loadPaymentData() {
+    database.ref('demandes/' + demandeId).once('value', (snapshot) => {
+        const data = snapshot.val();
+        
+        document.getElementById('loadingMessage').style.display = 'none';
+        
+        if (!data || data.etat !== 'Attente du paiement') {
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('errorMessage').textContent = 
+                'Cette page n\'est accessible que lorsque votre commande est en attente de paiement.';
+            return;
+        }
+        
+        sendPaymentEmail(data);
+        
+        document.getElementById('paymentContent').style.display = 'block';
+        displayPaymentInfo(data);
+    });
+}
+
+function sendPaymentEmail(data) {
+    const paymentLink = `https://webcraft-fr.vercel.app/paiement.html?id=${demandeId}`;
+    
+    emailjs.send("service_72h9u38", "template_mkkdsjl", {
+        to_email: data.email,
+        montant: data.montant || 'Non défini',
+        payment_link: paymentLink,
+        nom_projet: data.nom_projet || 'Votre projet',
+        order_id: demandeId
+    })
+    .then((response) => {
+        console.log('Email de paiement envoyé avec succès:', response);
+    })
+    .catch((error) => {
+        console.error('Erreur envoi email de paiement:', error);
+    });
+}
+
+function displayPaymentInfo(data) {
+    document.getElementById('paymentContent').innerHTML = `
+        <div class="payment-card">
+            <div class="amount-display">
+                <div class="amount-label">Montant à payer</div>
+                <div class="amount-value">${data.montant || 'Non défini'}</div>
+            </div>
+            
+            <div class="instructions">
+                <h4>📋 Instructions de paiement</h4>
+                <ol>
+                    <li>Regarder vos mails, un mail de paiement vous a été envoyé.</li>
+                    <li>Envoyez la somme au rib dans le mail</li>
+                    <li>Une fois le paiement effectué, l'admin validera votre commande</li>
+                    <li>Votre commande passera alors en ligne</li>
+                </ol>
+            </div>
+            
+            
+            
+            <div style="text-align:center;margin-top:30px;">
+                <a href="suivi.html?id=${demandeId}" class="back-btn">← Retour au suivi</a>
+            </div>
+        </div>
+    `;
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('✓ Copié dans le presse-papier !');
+    }).catch(err => {
+        console.error('Erreur de copie:', err);
+        alert('Impossible de copier. Veuillez sélectionner et copier manuellement.');
+    });
+}
+</script>
+
+</body>
+</html>

@@ -382,14 +382,14 @@ footer{
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
 (function(){
-   emailjs.init("ge42M3Tp_35vqb8_y");
+   emailjs.init("pGOE_nFg6qBP8CXMv");
 })();
 
 document.getElementById("contactForm").addEventListener("submit", function(event){
     event.preventDefault();
     const form = this;
 
-    emailjs.sendForm('service_i7rsl2l', 'template_lht2kd9', form)
+    emailjs.sendForm('service_t4kxahs', 'template_4r9bv1s', form)
     .then(function() {
         const msg = document.getElementById("formMessage");
         msg.style.display = "block";

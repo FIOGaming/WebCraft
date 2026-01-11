@@ -595,19 +595,18 @@ function formatDate(isoString) {
 // Calculer les statistiques
 function calculateStats(responses) {
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const weekAgo = new Date(today);
-    weekAgo.setDate(weekAgo.getDate() - 7);
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     
     let todayCount = 0;
     let weekCount = 0;
     
     responses.forEach(response => {
-        const responseDate = new Date(response.timestamp);
-        if (responseDate >= today) {
+        const responseDate = new Date(response.data.timestamp);
+        if (responseDate >= todayStart) {
             todayCount++;
         }
-        if (responseDate >= weekAgo) {
+        if (responseDate >= weekStart) {
             weekCount++;
         }
     });
@@ -751,6 +750,12 @@ function showDetailModal(response) {
     
     const questions = response.data.questions || [];
     
+    const paymentValidation = response.data.etat === 'Attente du paiement' ? `
+        <button onclick="validatePayment()" style="width:100%;padding:15px;background:#27ae60;color:white;border:none;border-radius:12px;cursor:pointer;font-weight:600;font-size:1rem;margin-top:15px;transition:all 0.3s ease;">
+            ✓ Valider le paiement reçu
+        </button>
+    ` : '';
+    
     modalBody.innerHTML = `
         <div class="detail-section">
             <div class="detail-label">🔧 Gestion de la commande</div>
@@ -777,78 +782,46 @@ function showDetailModal(response) {
                 <button onclick="saveChanges()" style="padding:15px;background:var(--blue);color:white;border:none;border-radius:12px;cursor:pointer;font-weight:600;font-size:1rem;">
                     💾 Sauvegarder les modifications
                 </button>
+                ${paymentValidation}
             </div>
         </div>
         
         <div class="detail-section">
-            <div class="detail-label">❓ Poser une question au client</div>
-            <div style="margin-top:15px;">
-                <textarea id="newQuestion" placeholder="Votre question..." style="width:100%;padding:12px;border:2px solid var(--gray);border-radius:12px;font-size:1rem;min-height:80px;font-family:'Poppins',sans-serif;"></textarea>
-                <button onclick="addQuestion()" style="margin-top:10px;padding:12px 25px;background:#27ae60;color:white;border:none;border-radius:12px;cursor:pointer;font-weight:600;">
-                    ➕ Ajouter la question
-                </button>
-            </div>
-        </div>
-        
-        ${questions.length > 0 ? `
-        <div class="detail-section">
-            <div class="detail-label">💬 Questions posées</div>
-            <div style="margin-top:15px;display:grid;gap:15px;">
-                ${questions.map((q, index) => `
-                    <div style="background:white;padding:15px;border-radius:12px;border-left:4px solid var(--blue);">
-                        <div style="font-weight:600;margin-bottom:5px;">${q.texte}</div>
-                        <div style="font-size:0.85rem;color:#7f8c8d;margin-bottom:10px;">
-                            ${new Date(q.timestamp).toLocaleDateString('fr-FR', {day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
-                        </div>
-                        ${q.reponse ? `
-                            <div style="background:#d4edda;padding:12px;border-radius:8px;border:2px solid #27ae60;">
-                                <div style="font-size:0.85rem;color:#27ae60;font-weight:600;margin-bottom:5px;">✓ Réponse du client :</div>
-                                <div>${q.reponse}</div>
-                            </div>
-                        ` : '<div style="color:#e74c3c;font-style:italic;">En attente de réponse</div>'}
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-        ` : ''}
-        
-        <div class="detail-section">
-            <div class="detail-label">📋 Informations de la demande</div>
+            <div class="detail-label">📧 Email</div>
+            <div class="detail-value important">${response.data.email || 'Non fourni'}</div>
         </div>
         
         <div class="detail-section">
-            <div class="detail-label">📅 Date de soumission</div>
-            <div class="detail-value">${formatDate(response.data.timestamp)}</div>
+            <div class="detail-label">📦 Pack sélectionné</div>
+            <div class="detail-value important">${response.data.pack}</div>
         </div>
         
         <div class="detail-section">
-            <div class="detail-label">🎂 Âge</div>
+            <div class="detail-label">👤 Âge</div>
             <div class="detail-value">${response.data.age}</div>
         </div>
         
         <div class="detail-section">
-            <div class="detail-label">🚀 Nom du projet</div>
-            <div class="detail-value important">${response.data.nom_projet || 'Sans nom'}</div>
+            <div class="detail-label">🏷️ Nom du projet</div>
+            <div class="detail-value important">${response.data.nom_projet}</div>
         </div>
         
         <div class="detail-section">
-            <div class="detail-label">🎨 Design</div>
+            <div class="detail-label">🎨 Design souhaité</div>
             <div class="detail-value tags">
                 ${design.map(d => `<span>${d}</span>`).join('')}
-                ${response.data.design_colore ? `<span>Couleurs: ${response.data.design_colore}</span>` : ''}
             </div>
         </div>
         
         <div class="detail-section">
-            <div class="detail-label">💭 Attentes du client</div>
-            <div class="detail-value">${response.data.attentes || 'Non spécifié'}</div>
+            <div class="detail-label">✍️ Description des attentes</div>
+            <div class="detail-value">${response.data.attentes || 'Non fourni'}</div>
         </div>
         
         <div class="detail-section">
-            <div class="detail-label">📝 Contenu</div>
+            <div class="detail-label">📄 Contenu</div>
             <div class="detail-value tags">
                 ${contenu.map(c => `<span>${c}</span>`).join('')}
-                ${response.data.contenu_autre ? `<span>${response.data.contenu_autre}</span>` : ''}
             </div>
         </div>
         
@@ -859,12 +832,15 @@ function showDetailModal(response) {
         
         <div class="detail-section">
             <div class="detail-label">💡 Source d'inspiration</div>
-            <div class="detail-value">${response.data.source_inspiration}${response.data.inspiration_source ? ' : ' + response.data.inspiration_source : ''}</div>
+            <div class="detail-value">
+                ${response.data.inspiration}
+                ${response.data.inspiration_source ? `<br><strong>De qui/quoi :</strong> ${response.data.inspiration_source}` : ''}
+            </div>
         </div>
         
         <div class="detail-section">
             <div class="detail-label">📅 Date optimale</div>
-            <div class="detail-value important">${response.data.date_optimale}</div>
+            <div class="detail-value">${response.data.date_optimale}</div>
         </div>
         
         <div class="detail-section">
@@ -872,24 +848,74 @@ function showDetailModal(response) {
             <div class="detail-value important">${response.data.date_maximale}</div>
         </div>
         
-        ${response.data.commentaires ? `
         <div class="detail-section">
-            <div class="detail-label">💬 Commentaires</div>
-            <div class="detail-value">${response.data.commentaires}</div>
-        </div>
-        ` : ''}
-        
-        <div class="detail-section">
-            <div class="detail-label">📦 Pack sélectionné</div>
-            <div class="detail-value important">${response.data.pack}</div>
+            <div class="detail-label">💬 Commentaires supplémentaires</div>
+            <div class="detail-value">${response.data.commentaires || 'Aucun'}</div>
         </div>
         
-        <button class="modal-delete-btn" onclick="deleteResponse('${response.id}', true)">
-            🗑️ Supprimer cette demande
+        <div class="detail-section">
+            <div class="detail-label">🔗 Lien de suivi client</div>
+            <div class="detail-value">
+                <a href="suivi.html?id=${response.id}" target="_blank" style="color:var(--blue);text-decoration:underline;">
+                    https://webcraft-fr.vercel.app/suivi.html?id=${response.id}
+                </a>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <div class="detail-label">💬 Questions posées au client</div>
+            <div style="margin-top:15px;">
+                ${questions.length > 0 ? questions.map((q, i) => `
+                    <div style="background:white;padding:15px;border-radius:10px;margin-bottom:10px;border-left:4px solid var(--blue);">
+                        <div style="font-weight:600;margin-bottom:8px;">❓ ${q.texte}</div>
+                        <div style="font-size:0.85rem;color:#7f8c8d;margin-bottom:10px;">
+                            ${new Date(q.timestamp).toLocaleDateString('fr-FR')}
+                        </div>
+                        ${q.reponse ? `
+                            <div style="background:#d5f4e6;padding:10px;border-radius:8px;border-left:3px solid #27ae60;">
+                                <strong style="color:#27ae60;">✓ Réponse du client :</strong><br>
+                                ${q.reponse}
+                            </div>
+                        ` : `
+                            <div style="background:#fff3cd;padding:10px;border-radius:8px;">
+                                <em style="color:#856404;">⏳ En attente de réponse</em>
+                            </div>
+                        `}
+                    </div>
+                `).join('') : '<p style="color:#7f8c8d;text-align:center;padding:20px;">Aucune question posée</p>'}
+                
+                <div style="margin-top:20px;">
+                    <label style="display:block;font-weight:600;margin-bottom:8px;">Poser une nouvelle question</label>
+                    <textarea id="newQuestion" placeholder="Votre question..." style="width:100%;padding:12px;border:2px solid var(--gray);border-radius:12px;font-size:1rem;min-height:100px;font-family:'Poppins',sans-serif;"></textarea>
+                    <button onclick="askQuestion()" style="margin-top:10px;padding:12px 25px;background:#27ae60;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:600;">
+                        📨 Envoyer la question
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <button class="modal-delete-btn" onclick="deleteResponse('${response.id}')">
+            🗑️ Supprimer la demande
         </button>
     `;
     
     modal.classList.add('active');
+}
+
+function validatePayment() {
+    if (!currentEditingId) return;
+    
+    if (confirm('Confirmer la réception du paiement ? La commande passera en "Mis en ligne".')) {
+        database.ref('demandes/' + currentEditingId).update({
+            etat: 'Mis en ligne'
+        }).then(() => {
+            alert('Paiement validé ! La commande est maintenant mise en ligne.');
+            closeModal();
+        }).catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la validation du paiement.');
+        });
+    }
 }
 
 function saveChanges() {
@@ -913,7 +939,7 @@ function saveChanges() {
     });
 }
 
-function addQuestion() {
+function askQuestion() {
     if (!currentEditingId) return;
     
     const questionText = document.getElementById('newQuestion').value.trim();
